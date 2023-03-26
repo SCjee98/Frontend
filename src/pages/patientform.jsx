@@ -1,6 +1,5 @@
 import { useState } from "react";
 import "../App.css";
-// import DialogBox from "./components/DialogBox";
 import FormInput from "../components/FormInput";
 import DialogBox from "../components/FormInput";
 import RadioInputs from "../components/RadioInputs";
@@ -277,14 +276,17 @@ const Patientform = () => {
     }
 
     console.log("Images are", imageinput)
-    await addUser(values);
+    console.log("values", values)
+    // await addUser(values);
     //navigate('/all');
   }
 
-  console.log("user data are: -", values)
-  console.log("Images:", images);
+  // console.log("user data are: -", values)
+  // console.log("Images:", images);
 
   const handleSelect = (e) => {
+    console.log("i am here");
+    console.log("name:", e.target.name)
     setValues({ ...values, [e.target.name]: e.target.value });
   };
 
@@ -296,25 +298,25 @@ const Patientform = () => {
     const files = document.getElementById("file-input").files;
     const container = document.getElementById("image-container");
 
-    //console.log("Files, Container:", files[0].type, container);
+    console.log("Files, Container:", files[0].type, container);
 
-    // for (let i = 0; i < files.length; i++) {
-    //   if (files[i].type.includes('png')) {
-    //     const file = files[i];
-    //     const img = document.createElement("img");
-    //     img.src = URL.createObjectURL(file);
-    //     //container?.appendChild(img);
-    //     array.push(img.src);
-    //   }
-    //   else {
-    //     const file = files[i];
-    //     const img = document.createElement("img");
-    //     img.src = URL.createObjectURL(file);
-    //     console.log("HERE:", img.src)
-    //     //container?.appendChild(img);
-    //     pdf.push(img.src);
-    //   }
-    // }
+    for (let i = 0; i < files.length; i++) {
+      if (files[i].type.includes('png')) {
+        const file = files[i];
+        const img = document.createElement("img");
+        img.src = URL.createObjectURL(file);
+        //container?.appendChild(img);
+        array.push(img.src);
+      }
+      else {
+        const file = files[i];
+        const img = document.createElement("img");
+        img.src = URL.createObjectURL(file);
+        console.log("HERE:", img.src)
+        //container?.appendChild(img);
+        pdf.push(img.src);
+      }
+    }
     setPdfs(pdf);
     setImages(array);
     //}
@@ -328,46 +330,45 @@ const Patientform = () => {
       <form onSubmit={handleSubmit}>
         <h1>Patients' Form</h1>
         <div className="form-div">
-          {inputs.map((input) => (
-            // eslint-disable-next-line react/jsx-no-undef
+          {inputs.map((input, idx) => (
             <FormInput
-              key={input.id}
+              key={idx}
               {...input}
-              value={values[input.name]}
+              value={values[input.value]}
               onChange={onChange}
             />
           ))}
-          <div className="formInput">
+          {/* <div className="formInput">
             <label htmlFor="dropdown">Select an option:</label>
             <select id="dropdown" onChange={handleSelect}>
               <option value="male">Male</option>
               <option value="female">Female</option>
               <option value="other">Other</option>
             </select>
-            {/* <p>You selected: {selectedValue}</p> */}
-          </div>
-          <input type="file" id="file-input" multiple />
+          </div> */}
+          {/* <input type="file" id="file-input" multiple />
           <div className="form-div">
             <button id="upload-button">Upload Images</button>
-          </div>
-                    <div className="formInput">
+          </div> */}
+          <div className="formInput">
             <label htmlFor="dropdown">Vaccine Status:</label>
-            <select id="dropdown" onChange={handleSelect}>
-              <option value="male">Fully Vaccinated</option>
-              <option value="female">Partially Vaccinated</option>
-              <option value="other">Not Vaccinated at all</option>
+            <select id="dropdown" name="vaccinestatus" onChange={handleSelect}>
+              <option value="FV">Fully Vaccinated</option>
+              <option value="PV">Partially Vaccinated</option>
+              <option value="NV">Not Vaccinated at all</option>
             </select>
             {/* <p>You selected: {selectedValue}</p> */}
           </div>
         </div>
 
-        <RadioInputs radioInputs={radioInputs} onChange={onChange} values={values} radioLabel={"Gender"} />
+        <RadioInputs radioInputs={radioInputs} onChange={onChange} values={values} radioLabel={"Gender"}  />
         <DialogBox selectedContent={selectedContent} onChange={(e) => setSelectedContent(e.target.value)} />
         <button onClick={() => addUserDetails()}>Submit</button>
       </form>
     </div>
   );
 };
+
 
 export default Patientform;
 

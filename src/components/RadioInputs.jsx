@@ -1,6 +1,7 @@
 import React from 'react'
 
 const RadioInputs = ({radioInputs, radioLabel, onChange, values}) => {
+  console.log(radioInputs)
   return (
     
     <div style={{ padding: '2rem 0 2rem 0'}}>
