@@ -136,9 +136,10 @@ const Patientform = () => {
     },
     {
       id: 14,
-      name: "image",
+      name: "vacine_certificate",
       type: "file",
-      value: "upload_image",
+      // multiple,
+      value: "vacine_certificate",
       placeholder: "Upload desired Image",
       label: "Upload Vaccine Certificate",
     },
@@ -266,7 +267,12 @@ const Patientform = () => {
   };
 
   const onChange = (e) => {
-    setValues({ ...values, [e.target.name]: e.target.value });
+    if (e.target.type == "file") {
+      // console.log(e.target.name);
+      console.log(e.target.files);
+    } else {
+      setValues({ ...values, [e.target.name]: e.target.value });
+    }
   };
 
   const addUserDetails = async () => {
@@ -274,10 +280,7 @@ const Patientform = () => {
     for (let i = 0; i < images.length; i++) {
       setimageinput(images[i])
     }
-
-    console.log("Images are", imageinput)
-    console.log("values", values)
-    // await addUser(values);
+    await addUser(values);
     //navigate('/all');
   }
 
@@ -285,41 +288,37 @@ const Patientform = () => {
   // console.log("Images:", images);
 
   const handleSelect = (e) => {
-    console.log("i am here");
-    console.log("name:", e.target.name)
     setValues({ ...values, [e.target.name]: e.target.value });
   };
 
 
-  function handleFiles() {
+  function handleFiles(e) {
     //window.onload = () => {
     const array = [], pdf = [];
-    console.log("Here")
-    const files = document.getElementById("file-input").files;
-    const container = document.getElementById("image-container");
+    console.log(e.target.files);
 
-    console.log("Files, Container:", files[0].type, container);
+    // console.log("Files, Container:", files[0].type, container);
 
-    for (let i = 0; i < files.length; i++) {
-      if (files[i].type.includes('png')) {
-        const file = files[i];
-        const img = document.createElement("img");
-        img.src = URL.createObjectURL(file);
-        //container?.appendChild(img);
-        array.push(img.src);
-      }
-      else {
-        const file = files[i];
-        const img = document.createElement("img");
-        img.src = URL.createObjectURL(file);
-        console.log("HERE:", img.src)
-        //container?.appendChild(img);
-        pdf.push(img.src);
-      }
-    }
-    setPdfs(pdf);
-    setImages(array);
-    //}
+    // for (let i = 0; i < files.length; i++) {
+    //   if (files[i].type.includes('png')) {
+    //     const file = files[i];
+    //     const img = document.createElement("img");
+    //     img.src = URL.createObjectURL(file);
+    //     //container?.appendChild(img);
+    //     array.push(img.src);
+    //   }
+    //   else {
+    //     const file = files[i];
+    //     const img = document.createElement("img");
+    //     img.src = URL.createObjectURL(file);
+    //     console.log("HERE:", img.src)
+    //     //container?.appendChild(img);
+    //     pdf.push(img.src);
+    //   }
+    // }
+    // setPdfs(pdf);
+    // setImages(array);
+    // //}
   }
 
   const button = document.getElementById("upload-button");
@@ -360,8 +359,7 @@ const Patientform = () => {
             {/* <p>You selected: {selectedValue}</p> */}
           </div>
         </div>
-
-        <RadioInputs radioInputs={radioInputs} onChange={onChange} values={values} radioLabel={"Gender"}  />
+        <RadioInputs radioInputs={radioInputs} onChange={onChange} values={values} radioLabel={"Gender"} />
         <DialogBox selectedContent={selectedContent} onChange={(e) => setSelectedContent(e.target.value)} />
         <button onClick={() => addUserDetails()}>Submit</button>
       </form>
